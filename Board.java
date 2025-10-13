@@ -1,9 +1,12 @@
 package edu.io;
 
 public class Board {
-    private final int size;
+    public final int size;
     private final Token[][] grid;
 
+    public Board(){
+        this(10);
+    }
     public Board(int size) {
         this.size = size;
         this.grid = new Token[size][size];
@@ -20,13 +23,13 @@ public class Board {
 
     public void placeToken(int col, int row, Token token) {
         if (col >= 0 && col < size && row >= 0 && row < size) {
-            grid[row][col] = token;
+            grid[col][row] = token;
         }
     }
 
     public Token square(int col, int row) {
         if (col >= 0 && col < size && row >= 0 && row < size) {
-            return grid[row][col];
+            return grid[col][row];
         }
         return null;
     }
