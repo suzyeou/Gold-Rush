@@ -1,1 +1,0 @@
-rootProject.name = "gold_rush"
