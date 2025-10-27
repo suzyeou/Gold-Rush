@@ -1,4 +1,5 @@
 import edu.io.Board;
+import edu.io.Player;
 import edu.io.token.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -34,7 +35,7 @@ class TokenTest {
     void test_PlayerToken_label() {
         Assertions.assertEquals(
                 Label.PLAYER_TOKEN_LABEL,
-                new PlayerToken(new Board()).label());
+                new PlayerToken(new Player(), new Board()).label());
     }
 
     @Test

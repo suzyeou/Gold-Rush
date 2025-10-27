@@ -1,18 +1,18 @@
 import edu.io.Board;
-import edu.io.token.GoldToken;
-import edu.io.token.Label;
-import edu.io.token.PlayerToken;
-import edu.io.token.Token;
+import edu.io.Player;
+import edu.io.token.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class BoardTest {
     Board board;
+    Player player;
 
     @BeforeEach
     void setUp() {
         board = new Board();
+        player = new Player();
     }
 
     @Test
@@ -22,7 +22,7 @@ class BoardTest {
 
     @Test
     void can_place_token() {
-        Token t = new PlayerToken(board);
+        Token t = new PlayerToken(player, board);
         board.placeToken(1, 2, t);
         Assertions.assertEquals(t, board.peekToken(1, 2));
     }
@@ -41,13 +41,39 @@ class BoardTest {
         Assertions.assertDoesNotThrow(() -> Board.class.getMethod("display"));
     }
 
+    @Test
+    void getAvailableSquare_returns_position_of_empty_square() {
+        Board.Coords c = board.getAvailableSquare();
+        Assertions.assertInstanceOf(
+                EmptyToken.class,
+                board.peekToken(c.col(), c.row()));
+        board.placeToken(c.col(), c.row(), new GoldToken());
+        c = board.getAvailableSquare();
+        Assertions.assertInstanceOf(
+                EmptyToken.class,
+                board.peekToken(c.col(), c.row())
+        );
+    }
+
+    @Test
+    void getAvailableSquare_throws_when_board_is_full() {
+        int n = board.size() * board.size();
+        Token token = new GoldToken();
+        for (int i=0; i<n; i++) {
+            Board.Coords c = board.getAvailableSquare();
+            board.placeToken(c.col(), c.row(), token);
+        }
+        Assertions.assertThrows(
+                IllegalStateException.class,
+                () -> board.getAvailableSquare());
+    }
+
     // -- utils
     boolean _is_board_clean() {
         int size = board.size();
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
-                if (!board.peekToken(col, row).label()
-                        .equals(Label.EMPTY_TOKEN_LABEL)) {
+                if (!(board.peekToken(col, row) instanceof EmptyToken)) {
                     return false;
                 }
             }

@@ -1,81 +1,68 @@
 import edu.io.Board;
-import edu.io.token.EmptyToken;
+import edu.io.Player;
+import edu.io.token.GoldToken;
 import edu.io.token.PlayerToken;
+import edu.io.token.Token;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class PlayerTest {
-    Board board;
-    PlayerToken token;
+    Board  board;
+    Player player;
 
     @BeforeEach
     void setUp() {
         board = new Board();
-        token = new PlayerToken(board);
+        player = new Player();
     }
 
     @Test
-    void new_PlayerToken_is_placed_on_the_board() {
-        Board.Coords pos = token.pos();
-        Assertions.assertEquals(token, board.peekToken(pos.col(), pos.row()));
+    void can_assign_token_to_player() {
+        PlayerToken token = new PlayerToken(player, board);
+        player.assignToken(token);
+        Assertions.assertEquals(token, player.token());
     }
 
     @Test
-    void stay_inside_and_throws_when_go_too_far_left() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            while (true) token.move(PlayerToken.Move.LEFT);
-        });
-        Board.Coords pos = token.pos();
-        Assertions.assertEquals(0, pos.col());
-    }
-    @Test
-    void stay_inside_and_throws_when_go_too_far_right() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            while (true) token.move(PlayerToken.Move.RIGHT);
-        });
-        Board.Coords pos = token.pos();
-        Assertions.assertEquals(board.size()-1, pos.col());
-    }
-    @Test
-    void stay_inside_throws_when_go_too_far_up() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            while (true) token.move(PlayerToken.Move.UP);
-        });
-        Board.Coords pos = token.pos();
-        Assertions.assertEquals(0, pos.row());
-    }
-    @Test
-    void stay_inside_throws_when_go_too_far_down() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            while (true) token.move(PlayerToken.Move.DOWN);
-        });
-        Board.Coords pos = token.pos();
-        Assertions.assertEquals(board.size()-1, pos.row());
+    void player_can_interact_with_gold() {
+        var goldToken = new GoldToken(2.0);
+        var gold = player.gold();
+        player.interactWithToken(goldToken);
+        Assertions.assertEquals(gold + 2.0, player.gold());
     }
 
     @Test
-    void move_moves_token() {
-        Board.Coords pos = token.pos();
-        token.move(PlayerToken.Move.DOWN);
-        Assertions.assertEquals(
-                token,
-                board.peekToken(pos.col(), pos.row()+1));
+    void player_can_gain_gold() {
+        var gold = player.gold();
+        player.gainGold(1.0);
+        Assertions.assertEquals(gold + 1.0, player.gold());
     }
 
     @Test
-    void after_move_prev_square_is_empty() {
-        Board.Coords pos = token.pos();
-        token.move(PlayerToken.Move.RIGHT);
-        Assertions.assertInstanceOf(
-                EmptyToken.class,
-                board.peekToken(pos.col(), pos.row()));
+    void player_can_lose_gold() {
+        player.gainGold(2.0);
+        var gold = player.gold();
+        player.loseGold(1.0);
+        Assertions.assertEquals(gold - 1.0, player.gold());
     }
 
     @Test
-    void Move_NONE_doesnt_move_token() {
-        Board.Coords pos = token.pos();
-        token.move(PlayerToken.Move.NONE);
-        Assertions.assertEquals(pos, token.pos());
+    void gold_cannot_go_below_zero() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> player.loseGold(1.0));
+        Assertions.assertEquals(0.0, player.gold());
     }
+
+    @Test
+    void gain_and_lose_amount_cannot_be_negative() {
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> player.gainGold(-1.0));
+        Assertions.assertThrows(
+                IllegalArgumentException.class,
+                () -> player.loseGold(-1.0));
+    }
+
 }

@@ -9,6 +9,7 @@ public class Board {
 
     public Board(){
         this(10);
+        clean();
     }
 
     public Board(int size) {
@@ -52,5 +53,17 @@ public class Board {
             }
             System.out.println();
         }
+    }
+
+    public Coords getAvailableSquare(){
+        Token t = new EmptyToken();
+        for (int row = 0; row < grid.length; row++) {
+            for (int col = 0; col < grid[row].length; col++) {
+                if (grid[row][col] instanceof EmptyToken) {
+                    return new Coords(row, col);
+                }
+            }
+        }
+       throw  new IllegalStateException("No available square");
     }
 }

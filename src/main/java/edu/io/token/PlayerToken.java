@@ -1,8 +1,11 @@
 package edu.io.token;
 
 import edu.io.Board;
+import edu.io.Board.Coords;
+import edu.io.Player;
 
 public class PlayerToken extends Token {
+    private Player player;
     private Board board;
     private int row;
     private int col;
@@ -15,17 +18,14 @@ public class PlayerToken extends Token {
         RIGHT
     }
 
-    public PlayerToken(Board board) {
+    public PlayerToken(Player player, Board board) {
         super(Label.PLAYER_TOKEN_LABEL);
+        this.player = player;
         this.board = board;
+        Coords squareCoords = board.getAvailableSquare();
+        this.row = squareCoords.row();
+        this.col = squareCoords.col();
         board.placeToken(col, row, this);
-    }
-
-    public PlayerToken(Board board, int row, int col) {
-        super(Label.PLAYER_TOKEN_LABEL);
-        this.board = board;
-        this.row = row;
-        this.col = col;
     }
 
     public void move(Move dir) {
@@ -45,13 +45,15 @@ public class PlayerToken extends Token {
             throw new IllegalArgumentException("Cannot move outside the board");
         }
 
+        player.interactWithToken(board.peekToken(tempRow, tempCol));
+
         board.placeToken(col, row, new EmptyToken());
         row = tempRow;
         col = tempCol;
         board.placeToken(col, row, this);
     }
 
-    public Board.Coords pos(){
-        return new Board.Coords(row, col);
+    public Coords pos(){
+        return new Coords(row, col);
     }
 }
