@@ -1,5 +1,6 @@
 package edu.io;
 
+import edu.io.player.Player;
 import edu.io.token.PlayerToken;
 import java.util.Scanner;
 

@@ -2,7 +2,7 @@ package edu.io.token;
 
 import edu.io.Board;
 import edu.io.Board.Coords;
-import edu.io.Player;
+import edu.io.player.Player;
 
 public class PlayerToken extends Token {
     private Player player;
