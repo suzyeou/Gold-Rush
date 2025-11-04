@@ -1,15 +1,20 @@
 package edu.io.player;
 
 public class Gold {
-    private double amount;
+    private double amount = 0.0;
 
     public Gold() {}
+
     public Gold(double amount) {
-        this.amount = amount;
+        if (amount >= 0) {
+            this.amount = amount;
+        }  else {
+            throw new IllegalArgumentException("Amount must be positive");
+        }
     }
 
     public double amount() {
-        return gold;
+        return amount;
     }
 
     public void gain(double amount) {

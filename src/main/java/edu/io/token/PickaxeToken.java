@@ -4,24 +4,33 @@ import edu.io.interfaces.Repairable;
 import edu.io.interfaces.Tool;
 
 public class PickaxeToken extends Token implements Tool, Repairable {
-    private double gainFactor = 1.5;
+    private double gainFactor;
     private Token pickaxeToken = new EmptyToken();
     private int durability;
     private Token withToken;
 
     public PickaxeToken() {
         super(Label.PICKAXE_TOKEN_LABEL);
+        this.gainFactor = 1.5;
+        this.durability = 3;
     }
 
     public PickaxeToken(double gainFactor) {
-        super(Label.PICKAXE_TOKEN_LABEL);
-        this.gainFactor = gainFactor;
+        this();
+        if (gainFactor > 0.0) {
+            this.gainFactor = gainFactor;
+        } else {
+            throw new IllegalArgumentException();
+        }
     }
 
-    public PickaxeToken(double gainFactor,int durability) {
-        super(Label.PICKAXE_TOKEN_LABEL);
-        this.gainFactor = gainFactor;
-        this.durability = durability;
+    public PickaxeToken(double gainFactor, int durability) {
+        this(gainFactor);
+        if (durability > 0.0) {
+            this.durability = durability;
+        }  else {
+            throw new IllegalArgumentException();
+        }
     }
 
     public double gainFactor() {
@@ -36,16 +45,29 @@ public class PickaxeToken extends Token implements Tool, Repairable {
         return durability <= 0;
     }
 
+    public void use() {
+        if (durability > 0) {
+            this.durability--;
+        }
+    }
+
     public PickaxeToken useWith(Token token) {
+        this.withToken = token;
         return this;
     }
 
     public PickaxeToken ifWorking(Runnable action) {
-        if (isBroken()) action.run();
+        if (!isBroken() && withToken instanceof GoldToken) {
+            action.run();
+            use();
+        }
         return this;
     }
 
     public PickaxeToken ifBroken(Runnable action) {
+        if (isBroken() && withToken instanceof GoldToken) {
+            action.run();
+        }
         return this;
     }
 
@@ -53,5 +75,7 @@ public class PickaxeToken extends Token implements Tool, Repairable {
         return this;
     }
 
-    public void repair() {}
+    public void repair() {
+        this.durability = 2;
+    }
 }

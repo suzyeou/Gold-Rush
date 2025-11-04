@@ -1,6 +1,7 @@
-package edu.io.token;
+package edu.io.player;
 
 import edu.io.interfaces.Tool;
+import edu.io.token.Token;
 
 public class NoTool implements Tool {
     @Override
