@@ -68,6 +68,13 @@ class BoardTest {
                 () -> board.getAvailableSquare());
     }
 
+    @Test
+    void throws_on_null_in_placeToken() {
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> board.placeToken(1, 1, null));
+    }
+
     // -- utils
     boolean _is_board_clean() {
         int size = board.size();

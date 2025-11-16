@@ -1,7 +1,7 @@
 package edu.io.player;
 
 public class Gold {
-    private double amount = 0.0;
+    private double amount;
 
     public Gold() {}
 

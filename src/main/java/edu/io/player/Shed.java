@@ -8,7 +8,7 @@ public class Shed {
     private Stack<Tool> tools;
 
     public Shed () {
-        this.tools = new Stack<>();
+        tools = new Stack<>();
     }
 
     public boolean isEmpty() {

@@ -82,4 +82,20 @@ class PlayerTokenTest {
                 EmptyToken.class,
                 board.peekToken(pos.col(), pos.row()));
     }
+
+    @Test
+    void throws_on_null_in_ctor() {
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> {new PlayerToken(null, board);});
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> {new PlayerToken(player, null);});
+    }
+
+    @Test
+    void throws_on_null_in_move() {
+        Assertions.assertThrows(NullPointerException.class,
+                () -> playerToken.move(null));
+    }
 }

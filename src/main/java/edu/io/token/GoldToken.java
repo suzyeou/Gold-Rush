@@ -5,7 +5,7 @@ public class GoldToken extends Token {
 
     public GoldToken() {
         super(Label.GOLD_TOKEN_LABEL);
-        this.amount = 1.0;
+        amount = 1.0;
     }
 
     public GoldToken(double amount) {

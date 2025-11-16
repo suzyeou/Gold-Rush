@@ -4,6 +4,8 @@ import edu.io.Board;
 import edu.io.Board.Coords;
 import edu.io.player.Player;
 
+import java.util.Objects;
+
 public class PlayerToken extends Token {
     private Player player;
     private Board board;
@@ -20,15 +22,16 @@ public class PlayerToken extends Token {
 
     public PlayerToken(Player player, Board board) {
         super(Label.PLAYER_TOKEN_LABEL);
-        this.player = player;
-        this.board = board;
+        this.player = Objects.requireNonNull(player, "Player cannot be null");
+        this.board = Objects.requireNonNull(board, "Board cannot be null");
         Coords squareCoords = board.getAvailableSquare();
-        this.row = squareCoords.row();
-        this.col = squareCoords.col();
+        row = squareCoords.row();
+        col = squareCoords.col();
         board.placeToken(col, row, this);
     }
 
     public void move(Move dir) {
+        Objects.requireNonNull(dir, "Move cannot be null");
         int tempRow = row;
         int tempCol = col;
 

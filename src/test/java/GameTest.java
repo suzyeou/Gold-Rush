@@ -55,4 +55,11 @@ class GameTest {
     void has_method_start() {
         Assertions.assertDoesNotThrow(() -> Game.class.getMethod("start"));
     }
+
+    @Test
+    void throws_when_join_null() {
+        Assertions.assertThrows(
+                NullPointerException.class,
+                () -> game.join(null));
+    }
 }
