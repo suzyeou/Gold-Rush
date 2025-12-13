@@ -27,3 +27,18 @@ java {
         languageVersion.set(JavaLanguageVersion.of(24))
     }
 }
+
+tasks.jar {
+    archiveFileName.set("game_client.jar")
+
+    manifest {
+        attributes["Main-Class"] = "edu.io.net.client.GameClient"
+    }
+
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.exists() }.map { if (it.isDirectory) it else zipTree(it) }
+    })
+}
