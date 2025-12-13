@@ -34,7 +34,15 @@ public class GameClient {
             default -> CommandAck.NO_ACK;
         });
 
-        gsc.issueCommand(new JoinGame.Cmd("ziutek"));
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter your name: ");
+        String name = scanner.next();
+        gsc.issueCommand(new JoinGame.Cmd(name), cmdRe -> {
+            if (cmdRe.status() != JoinGame.CmdRe.Status.OK) {
+                System.err.printf("Error: %s",cmdRe.status());
+                exit(0);
+            }
+        });
 
         new Scanner(System.in).nextLine();
     }

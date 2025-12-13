@@ -52,3 +52,9 @@ tasks.named("shadowJar") {
 tasks.jar {
     enabled = false
 }
+
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(24))
+    }
+}

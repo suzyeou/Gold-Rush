@@ -45,3 +45,4 @@ fun gitCommitCount(): Int {
     }
     return stdout.toString().trim().toIntOrNull() ?: 0
 }
+

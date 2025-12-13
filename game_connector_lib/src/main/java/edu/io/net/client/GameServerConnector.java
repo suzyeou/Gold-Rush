@@ -63,11 +63,11 @@ public class GameServerConnector {
 
     /** Handler for commands sent by the server. */
     private @NotNull Function<Command, CommandAck> cmdSentBySrvHandler =
-            (_) -> CommandAck.NO_ACK;
+            (arg) -> CommandAck.NO_ACK;
 
     /** Handler invoked for any received response from the server. */
     private @NotNull Consumer<CommandRe> respFromSrvHandler =
-            (_) -> {};
+            (arg) -> {};
 
     private enum State { DISCONNECTED, CONNECTED }
     private enum Status { NONE, OK, ERROR }
@@ -248,7 +248,7 @@ public class GameServerConnector {
             @NotNull Function<Command, CommandAck> onCommand) {
         this.cmdSentBySrvHandler = Objects.requireNonNullElse(
                 onCommand,
-                (_) -> CommandAck.NO_ACK
+                (arg) -> CommandAck.NO_ACK
         );
     }
 
