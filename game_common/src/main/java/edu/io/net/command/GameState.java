@@ -48,7 +48,7 @@ public interface GameState extends Serializable {
      * @param pos   the board position of this square
      * @param label a logical label, symbol, or other visual/textual marker
      */
-    record BoardSquareInfo(Position pos, Character label)
+    record BoardSquareInfo(Position pos, String label)
             implements GameState {}
 
     /**

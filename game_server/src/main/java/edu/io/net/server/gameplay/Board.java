@@ -90,7 +90,7 @@ public class Board implements UpdateStateFactory.StateSource {
        while (i < t.length) {
            var c = t[i++] - 58; // magic ;)
            var r = t[i++] - 58;
-           var label = t[i++];
+           var label = t[i++] + "";
            cmd.add(new GameState.BoardSquareInfo(new GameState.Position(c, r), label));
        }
     }

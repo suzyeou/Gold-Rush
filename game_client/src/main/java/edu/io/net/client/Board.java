@@ -4,12 +4,12 @@ import edu.io.net.command.GameState;
 
 public class Board {
     private int size = 0;
-    private Character[][] grid;
-    private static final Character EMPTY_LABEL = '・';
+    private String[][] grid;
+    private static final String EMPTY_LABEL = "・";
 
     public void create(GameState.BoardInfo boardInfo) {
         size = boardInfo.size();
-        grid = new Character[size][size];
+        grid = new String[size][size];
         for (int row = 0; row < size; row++) {
             for (int col = 0; col < size; col++) {
                 grid[col][row] = EMPTY_LABEL;
